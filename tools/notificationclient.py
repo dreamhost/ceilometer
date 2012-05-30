@@ -54,7 +54,10 @@ def record_messages(connection, topic, output):
 def monitor_messages(connection, topic):
     """Listen to notification.info messages and print them."""
     def process_event(msg):
-        body = msg['args']['data']
+        if 'args' in msg:
+            body = msg['args']['data']
+        else:
+            body = msg
         if 'resource_id' in body:
             print ('%s: %s/%-15s: %s' %
                    (body.get('timestamp'),
